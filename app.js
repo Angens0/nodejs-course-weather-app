@@ -1,33 +1,29 @@
 const request = require('request')
+const geocode = require('./utils/geocode')
 
-const url = 'http://api.weatherstack.com/current?access_key=084faa9609f60350e65abf5ad4d4dd02&query=37.8267,-122.4233'
+// const weather = ({longitude, latitude}, callback) => {
+//     const url = `http://api.weatherstack.com/current?access_key=084faa9609f60350e65abf5ad4d4dd02&query=${latitude},${longitude}`
 
-request({ url, json: true }, (error, response) => {
-    if(error) {
-        console.log('Unable to connect to weather service!')
-        return
-    } else if(response.body.error) {
-        console.log('Unable to find location')
-        return
-    }
+//     request({ url, json: true }, (error, response) => {
+//         if(error) {
+//             console.log('Unable to connect to weather service!')
+//             return
+//         } else if(response.body.error) {
+//             console.log('Unable to find location')
+//             return
+//         }
+    
+//         callback(response.body.current, response.body.location)
+//         // const {weather_descriptions, temperature, feelslike} = response.body.current
+//         // console.log(`${weather_descriptions[0]}. It is currently ${temperature} degrees out. It feels like ${feelslike} degrees`)
+//     })
+// }
 
-    const {weather_descriptions, temperature, feelslike} = response.body.current
-    console.log(`${weather_descriptions[0]}. It is currently ${temperature} degrees out. It feels like ${feelslike} degrees`)
-})
+// const printWeather = ({weather_descriptions, temperature, feelslike}, location) => {
+//     console.log(`The curent weather in ${location.name}, ${location.country}:\n${weather_descriptions[0]}. It is currently ${temperature} degrees out. It feels like ${feelslike} degrees`)
+// }
 
-const geocodeToken = 'pk.eyJ1IjoiYW5nZW5zMCIsImEiOiJjazhxbHJmcHUwNDlqM3BubGkyb203cmUxIn0.MPiPGwPNCL09ufaLIEllrg'
-const geocodeSearchText = 'los angeles'
-const geocodeURL = `https://api.mapbox.com/geocoding/v5/mapbox.places/${geocodeSearchText}.json?access_token=${geocodeToken}&limit=1`
-
-request({ url: geocodeURL, json: true }, (error, response) => {
-    if(error) {
-        console.log('Unable to connect to location services!')
-        return
-    } else if(response.body.error || response.body.message === 'Not Found' || !response.body.features.length) {
-        console.log('Unable to find location')
-        return
-    }
-
-    const [longitude, latitude] = response.body.features[0].center
-    console.log(longitude, latitude)
+geocode('New York', (error, data) => {
+    console.log('Error', error)
+    console.log('Data', data)
 })
