@@ -8,14 +8,17 @@ const geocode = (adress, callback) => {
         if(error) {
             callback('Unable to connect to location services!', undefined)
             return
-        } else if(response.body.error || response.body.message === 'Not Found' || !response.body.features.length) {
+        }
+
+        const {error:responseError, message, features} = response.body
+        if(responseError || message === 'Not Found' || !features.length) {
             callback('Unable to find location', undefined)
             return
         }
 
-        const [longitude, latitude] = response.body.features[0].center
-        const {place_name} = response.body.features[0]
-        callback(undefined, {longitude, latitude, place_name})
+        const [longitude, latitude] = features[0].center
+        const {place_name:location} = features[0]
+        callback(undefined, {longitude, latitude, location})
     })
 }
 

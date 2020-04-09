@@ -4,16 +4,16 @@ const forecast = ({longitude, latitude}, callback) => {
     const token = '084faa9609f60350e65abf5ad4d4dd02'
     const url = `http://api.weatherstack.com/current?access_key=${token}&query=${latitude},${longitude}`
 
-    request({ url, json: true }, (error, response) => {
+    request({ url, json: true }, (error, { body }) => {
         if(error) {
             callback('Unable to connect to weather service!', undefined)
             return
-        } else if(response.body.error) {
+        } else if(body.error) {
             callback('Unable to find location', undefined)
             return
         }
     
-        const {weather_descriptions, temperature, feelslike} = response.body.current
+        const {weather_descriptions, temperature, feelslike} = body.current
         const result = `${weather_descriptions[0]}. It is currently ${temperature} degrees out. It feels like ${feelslike} degrees`
         callback(undefined, result)
     })

@@ -12,7 +12,7 @@ if(!adress) {
         forecast(geocodeData, (error, forecastData) => {
             if(error) return console.log(error)
     
-            console.log(geocodeData.place_name)
+            console.log(geocodeData.location)
             console.log(forecastData)
         })
     })
